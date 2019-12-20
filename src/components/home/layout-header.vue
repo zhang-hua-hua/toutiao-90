@@ -10,17 +10,17 @@
           <el-row type='flex' justify="end" align="middle">
               <img :src="userInfo.photo?userInfo.photo:defaultImg" alt="">
 
-                <el-dropdown>
+                <el-dropdown @command="clickMenu">
                     <!-- 匿名插槽就是下拉菜单显示的元素内容 -->
-                   <span>
+                   <span class="el-dropdown-link">
                       {{userInfo.name}}
                    </span>
 
                    <!-- slot具名插槽就是我鼠标放上去显示的二级内容 -->
                    <el-dropdown-menu slot="dropdown">
-                   <el-dropdown-item>个人信息</el-dropdown-item>
-                   <el-dropdown-item>git地址</el-dropdown-item>
-                   <el-dropdown-item>退出</el-dropdown-item>
+                   <el-dropdown-item command="info">个人信息</el-dropdown-item>
+                   <el-dropdown-item command="git">git地址</el-dropdown-item>
+                   <el-dropdown-item command="lgout">退出</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
           </el-row>
@@ -47,6 +47,20 @@ export default {
     }).then(result => {
       this.userInfo = result.data.data
     })
+  },
+  methods: {
+    //   点击菜单项是触发
+    clickMenu (command) {
+      if (command === 'info') {
+
+      } else if (command === 'git') {
+        window.location.href = 'https://github.com/zhang-hua-hua/toutiao-90'
+      } else {
+        //   退出
+        window.localStorage.removeItem('user-token')// 删除令牌
+        this.$router.push('/login') // 回到登录页面
+      }
+    }
   }
 }
 </script>
