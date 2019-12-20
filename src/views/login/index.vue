@@ -60,9 +60,20 @@ export default {
   methods: {
     submitLogin () {
       // 手动校验
-      this.$refs.myForm.validate(function (isOK) {
+      this.$refs.myForm.validate((isOK) => {
         if (isOK) {
-          console.log('校验通过，开始调用接口')
+          // 说明校验通过，应该调用登录接口
+          // 参数body  get参数也加地址参数，路由参数，查询参数
+          // body参数放在 axios的data里边
+          // get参数放在axios的params里边
+          this.$axios({
+            url: '/authorizations', // 请求地址 axios 没有指定类型默认走get
+            method: 'post', // 类型
+            data: this.loginForm // body参数
+          }).then(result => { // 在.then中接收我的结果,他只接收正确结果
+            // 前端换存 登录成功返回给我们的令牌
+            window.locakStorage.setItem('user-token', result.data.data.token)
+          }).catch(() => {}) // .catch只接受错误结果
         }
       })
     }
