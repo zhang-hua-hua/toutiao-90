@@ -8,14 +8,14 @@
       </el-col>
         <el-col class="right" :span="12">
           <el-row type='flex' justify="end" align="middle">
-              <img src="../../assets/img/toux.jpg" alt="">
+              <img :src="userInfo.photo?userInfo.photo:defaultImg" alt="">
 
                 <el-dropdown>
                     <!-- 匿名插槽就是下拉菜单显示的元素内容 -->
-                   <span class="el-dropdown-link">
-                   丑女无敌
-                   <i class="el-icon-arrow-down el-icon--right"></i>
+                   <span>
+                      {{userInfo.name}}
                    </span>
+
                    <!-- slot具名插槽就是我鼠标放上去显示的二级内容 -->
                    <el-dropdown-menu slot="dropdown">
                    <el-dropdown-item>个人信息</el-dropdown-item>
@@ -30,7 +30,24 @@
 
 <script>
 export default {
-
+  data () {
+    return {
+      userInfo: {}, // 定义一个用户对象
+      defaultImg: require('../../assets/img/toux.jpg') // 将图片头像转换成了变量
+    }
+  },
+  created () {
+    let token = localStorage.getItem('user-token') // 获取用户令牌
+    this.$axios({
+      url: '/user/profile',
+      headers: {
+        //   header的参数内容
+        Authorization: `Bearer ${token}`
+      }
+    }).then(result => {
+      this.userInfo = result.data.data
+    })
+  }
 }
 </script>
 
