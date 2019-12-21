@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
+import './permission/index' // 直接引入前置首位但在其他地方使用
 import router from './router'
 import ElementUI from 'element-ui' // 引入模块
 import components from './components/index'
