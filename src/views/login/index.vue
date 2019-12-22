@@ -74,11 +74,6 @@ export default {
             // 前端换存 登录成功返回给我们的令牌
             window.localStorage.setItem('user-token', result.data.token)
             this.$router.push('/home')// 跳转到home主页
-          }).catch(() => {
-            this.$message({
-              message: '登录失败',
-              type: 'warning'
-            })
           }) // .catch只接受错误结果
         }
       })
