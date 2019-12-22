@@ -13,4 +13,12 @@ axios.interceptors.request.use(function (config) {
 }, function () {
   // 执行请求No时，这个参数是不经常用的
 })
+
+// 响应拦截器
+axios.interceptors.response.use(function (response) {
+  // 成功时执行该函数   什么是成功状态码是 200 201 204时
+  return response.data ? response.data : {}
+}, function () {
+  // 失败是执行的函数
+})
 export default axios

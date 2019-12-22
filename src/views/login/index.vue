@@ -72,7 +72,7 @@ export default {
             data: this.loginForm // body参数
           }).then(result => { // 在.then中接收我的结果,他只接收正确结果
             // 前端换存 登录成功返回给我们的令牌
-            window.localStorage.setItem('user-token', result.data.data.token)
+            window.localStorage.setItem('user-token', result.data.token)
             this.$router.push('/home')// 跳转到home主页
           }).catch(() => {
             this.$message({
