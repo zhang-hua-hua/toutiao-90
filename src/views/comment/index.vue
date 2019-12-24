@@ -24,6 +24,21 @@
           </template>
         </el-table-column>
       </el-table>
+
+      <!-- 分页123456 -->
+      <el-row type='flex' justify="center" align="middle" style="height:80px">
+
+        <!-- 分页组件中的 total总页码 不能写死-->
+         <el-pagination
+         background
+         layout="prev, pager, next"
+         :page-size="page.pageSize"
+         :current-page="page.currentPage"
+         :total="page.total"
+         @current-change="changePage"
+         >
+         </el-pagination>
+      </el-row>
   </el-card>
 </template>
 
@@ -32,17 +47,29 @@ export default {
 
   data () {
     return {
-      list: []//   定义一个数据接收我返回的数据
+      list: [], //   定义一个数据接收我返回的数据
+      page: {
+        total: 0,
+        pageSize: 10, // 默认每条页数长度为10
+        currentPage: 1 // 默认页码为1
+        // 专门存放分页信息数据
+      }
     }
   },
   methods: {
+    // 页码改变事件
+    changePage (newPage) {
+      this.page.currentPage = newPage// 最新的页码
+      this.getComment()
+    },
     getComment () {
       this.$axios({
         url: '/articles',
-        params: { response_type: 'comment' }// 传的参数
+        params: { response_type: 'comment', page: this.page.currentPage, per_page: this.page.pageSize }// 传的参数
         // .then就是返回数据结果
       }).then(result => {
         this.list = result.data.results
+        this.page.total = result.data.total_count // 总条数
       })
     },
     formmatterBoolean (row, column, cellValue, index) {
