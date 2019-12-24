@@ -61,10 +61,11 @@ export default {
         this.$axios({
           method: 'put',
           url: '/comments/status',
-          params: { article_id: row.id },
+          params: { article_id: row.id.toString() },
           data: { allow_comment: !row.comment_status }// 因为当前如果是打开，就是关闭 如果是关闭 就是打开
         }).then(result => {
-          this.getComment()
+          // 表示你执行成功
+          this.getComment() // 重新拉去评论管理数据
         })
       })
     }

@@ -2,6 +2,7 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
 import router from '../router/index'
+import JSONBig from 'json-bigint'// 引入第三方包
 
 // 常态值
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0/'
@@ -15,6 +16,9 @@ axios.interceptors.request.use(function (config) {
 }, function () {
   // 执行请求No时，这个参数是不经常用的
 })
+axios.defaults.transformResponse = [function (data) {
+  return JSONBig.parse(data)// 解决js出路大数字是真问题
+}]
 
 // 响应拦截器
 axios.interceptors.response.use(function (response) {
@@ -41,6 +45,8 @@ axios.interceptors.response.use(function (response) {
     default:
       break
   }
-  Message({ type: 'warning', message: message })
+  Message({ type: 'warning', message: message })// 提示信息
+  // 这里需要注意 错误执行函数  如果不做任何操作  还会进入到promise then中
+  return Promise.reject(error)// 只要reject=>catch
 })
 export default axios
