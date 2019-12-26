@@ -14,12 +14,12 @@
                      <el-card class='img-card' v-for="item in list" :key="item.id">
                          <img :src="item.url" alt="">
                         <el-row class="operate" type="flex" justify="space-around" align="middle">
-                          <el-button type="warning" icon="el-icon-star-off" circle></el-button>
-                          <el-button type="danger" icon="el-icon-delete" circle></el-button>
+                          <!-- 需要根据当前是否收藏的状态来决定  是否给按钮颜色 -->
+                          <el-button @click="collectOrCancel(item)" :style="{color:item.is_collected?'blue':'#fff'}" type="warning" icon="el-icon-star-off" circle></el-button>
+                          <el-button @click="delMaterial(item.id)" type="danger" icon="el-icon-delete" circle></el-button>
                         </el-row>
                      </el-card>
                 </div>
-
            </el-tab-pane>
            <el-tab-pane label="收藏图片" name="collect">
                <div class="img-list">
@@ -59,6 +59,27 @@ export default {
   },
   // 获取素材的方法
   methods: {
+    // 删除用户素材方法
+    delMaterial (id) {
+      this.$confirm('你确定删除此图片吗？').then(() => {
+        this.$axios({
+          method: 'delete',
+          url: `/user/images/${id}`
+        }).then(() => {
+          this.getMaterial() // 从新拉去数据
+        })
+      })
+    },
+    // 取消或收藏方法
+    collectOrCancel (item) {
+      this.$axios({
+        method: 'put',
+        url: `/user/images/${item.id}`,
+        data: {
+          collect: !item.is_collected // 取反  因为  收藏  =>取消收藏
+        }
+      }).then(result => { this.getMaterial() })
+    },
     // 改变页数方法
     changePage (newPage) {
       this.page.currentPage = newPage
@@ -69,6 +90,7 @@ export default {
       this.page.currentPage = 1// 重置回第一页
       this.getMaterial()
     },
+    // 获取素材的方法
     getMaterial () {
       this.$axios({
         url: 'user/images',

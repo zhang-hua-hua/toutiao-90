@@ -17,7 +17,7 @@ axios.interceptors.request.use(function (config) {
   // 执行请求No时，这个参数是不经常用的
 })
 axios.defaults.transformResponse = [function (data) {
-  return JSONBig.parse(data)// 解决js出路大数字是真问题
+  return data ? JSONBig.parse(data) : {}// 解决js出路大数字是真问题
 }]
 
 // 响应拦截器
