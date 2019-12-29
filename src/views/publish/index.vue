@@ -62,6 +62,29 @@ export default {
       }
     }
   },
+  // beforeRouteUpdate (to, from, next) {
+  //   console.log(to)
+  //   next()
+  // },
+  watch: {
+    // 处理两个地址对应同一个组件跳转的时候  组件不销毁 但是数据没有充值的问题
+    $route: function (to, from) {
+      if (to.params.articleId) {
+        // 是修改
+      } else {
+        // 是发布
+        this.formData = {
+          title: '', // 文章标题
+          comtent: '', // 文章内容
+          cover: {
+            type: 0, // 封面类型
+            images: [] // 放置封面地址的数组
+          },
+          channel_id: null // 频道id
+        }
+      }
+    }
+  },
   methods: {
     // 获取所有的频道
     getChannels () {
@@ -90,10 +113,20 @@ export default {
           })
         }
       })
+    },
+    // 通过id查询文章数据
+    getArticleById (articleId) {
+      this.$axios({
+        url: `/articles/${articleId}`
+      }).then(result => {
+        this.formData = result.data // 将数据赋值给data
+      })
     }
   },
   created () {
     this.getChannels()
+    let{ articleId } = this.$route.params
+    articleId && this.getArticleById(articleId)// 如果文章id存在  直接查询文章的数据
   }
 }
 </script>

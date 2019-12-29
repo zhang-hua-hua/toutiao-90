@@ -25,10 +25,13 @@ const routes = [
       path: 'material',
       component: () => import('../views/mateial')
     }, {
-      path: 'articles',
+      path: 'articles', // 文章列表
       component: () => import('../views/articles/index.vue')
     }, {
-      path: 'publish',
+      path: 'publish', // 发布文章
+      component: () => import('../views/publish/index.vue')
+    }, {
+      path: 'publish/:articleId', // 修改文章
       component: () => import('../views/publish/index.vue')
     }]
   }, {
