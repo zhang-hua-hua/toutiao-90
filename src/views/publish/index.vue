@@ -84,6 +84,16 @@ export default {
           channel_id: null // 频道id
         }
       }
+    },
+    // 监听  封面类型的改变
+    'formData.cover.type': function () {
+      if (this.formData.cover.type === 0 | this.formData.cover.type === -1) {
+        this.formData.cover.images = []// 无图或者自动
+      } else if (this.formData.cover.type === 1) {
+        this.formData.cover.images = ['']// 单图
+      } else if (this.formData.cover.type === 3) {
+        this.formData.cover.images = ['', '', '']// 3图
+      }
     }
   },
   methods: {
