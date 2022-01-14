@@ -27,7 +27,7 @@
     "less": "^3.0.4",
     "less-loader": "^5.0.0",
     "lint-staged": "^9.4.3",
-    "node-forge": "^0.9.1",
+    "node-forge": "^1.0.0",
     "vue-template-compiler": "^2.6.10"
   },
   "gitHooks": {
